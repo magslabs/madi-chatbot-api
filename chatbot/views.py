@@ -21,6 +21,7 @@ from .serializers import InitializeChatbotSerializer, PromptChatbotSerializer, T
 data = []
 words = []
 classes = []
+model = any
 
 lemmatizer = WordNetLemmatizer()
 
