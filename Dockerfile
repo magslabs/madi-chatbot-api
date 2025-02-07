@@ -8,6 +8,9 @@ ENV PYTHONUNBUFFERED 1
 RUN mkdir -p /code
 WORKDIR /code
 
+RUN python -m venv venv
+RUN /bin/bash -c "source venv/bin/activate"
+
 COPY requirements.txt /tmp/requirements.txt
 RUN set -ex && \
     pip install --upgrade pip && \
