@@ -11,6 +11,13 @@ from tensorflow.keras.regularizers import l2
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 
+# Define the path to the static folder
+project_folder = os.path.dirname(os.path.dirname(__file__))
+static_folder = os.path.join(project_folder, 'staticfiles')
+
+# Ensure the static folder exists
+os.makedirs(static_folder, exist_ok=True)
+
 
 data = []
 words = []
@@ -23,30 +30,32 @@ train_x = []
 train_y = []
 
 def load_data():
-    with open('data.json', 'r') as file:
+    data_path = os.path.join(static_folder, 'data.json')
+    with open(data_path, 'r') as file:
         data = json.load(file)
         
     return data
 
 def load_words():
-    if os.path.exists("words.pkl"):
-        return pickle.load(open("words.pkl", "rb"))
+    words_path = os.path.join(static_folder, "words.pkl")
+    if os.path.exists(words_path):
+        return pickle.load(open(words_path, "rb"))
     else:
         raise FileNotFoundError("Words file 'words.pkl' not found. Please train the chatbot first.")
     
 def load_classes():
-    if os.path.exists("classes.pkl"):
-        return pickle.load(open("classes.pkl", "rb"))
+    classes_path = os.path.join(static_folder, "classes.pkl")
+    if os.path.exists(classes_path):
+        return pickle.load(open(classes_path, "rb"))
     else:
         raise FileNotFoundError("Classes file 'classes.pkl' not found. Please train the chatbot first.")
     
 def load_trained_model():
-    # if os.path.exists("chatbot_model.h5"):
-    #     return load_model("chatbot_model.h5")
-    if os.path.exists("chatbot_model.keras"):
-        return load_model("chatbot_model.keras")
+    model_path = os.path.join(static_folder, "chatbot_model.keras")
+    if os.path.exists(model_path):
+        return load_model(model_path)
     else:
-        raise FileNotFoundError("Model file 'chatbot_model.h5' not found. Please train the chatbot first.")
+        raise FileNotFoundError("Model file 'chatbot_model.keras' not found. Please train the chatbot first.")
 
 def setup_nltk():
     nltk_data_path = os.path.join(os.path.expanduser("~"), "nltk_data")
@@ -84,8 +93,14 @@ def setup_preprocessing_of_data():
         preprocess_data()
         
         # Save words and classes
-        pickle.dump(words, open("words.pkl", "wb"))
-        pickle.dump(classes, open("classes.pkl", "wb"))
+        words_path = os.path.join(static_folder, "words.pkl")
+        classes_path = os.path.join(static_folder, "classes.pkl")
+        
+        with open(words_path, "wb") as words_file:
+            pickle.dump(words, words_file)
+        
+        with open(classes_path, "wb") as classes_file:
+            pickle.dump(classes, classes_file)
         
     save_preprocessed_data()
 
@@ -120,7 +135,7 @@ def initialize_training_data():
 
 def build_model():
     model = Sequential()
-    model.add(Dense(256, input_shape=(len(train_x[0]),), activation="relu"))
+    model.add(Dense(258, input_shape=(len(train_x[0]),), activation="relu"))
     model.add(Dropout(0.5))
     model.add(Dense(128, activation="relu"))
     model.add(Dropout(0.5))
@@ -134,10 +149,15 @@ def build_model():
     return model
 
 def train_model():
-    model = build_model()
-    model.fit(train_x, train_y, epochs=1024, batch_size=32, verbose=1)
-    # model.save("chatbot_model.h5")
-    model.save("chatbot_model.keras")
+    model_path = os.path.join(static_folder, "chatbot_model.keras")
+    if os.path.exists(model_path):
+        model = load_model(model_path)
+        model.fit(train_x, train_y, epochs=512, batch_size=64, verbose=1)
+        model.save(os.path.join(static_folder, "chatbot_model.keras"))
+    else:
+        model = build_model()
+        model.fit(train_x, train_y, epochs=1024, batch_size=64, verbose=1)
+        model.save(os.path.join(static_folder, "chatbot_model.keras"))
     
 def start_training_process():
     initialize_preprocessed_data()
