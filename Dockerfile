@@ -1,4 +1,4 @@
-ARG PYTHON_VERSION=3.11-slim
+ARG PYTHON_VERSION=3.11
 
 FROM python:${PYTHON_VERSION}
 
@@ -6,7 +6,6 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 RUN mkdir -p /code
-
 WORKDIR /code
 
 COPY requirements.txt /tmp/requirements.txt
@@ -18,4 +17,4 @@ COPY . /code
 
 EXPOSE 8000
 
-CMD ["gunicorn","--bind",":8000","--workers","2","madi_chatbot.wsgi"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "myproject.wsgi"]

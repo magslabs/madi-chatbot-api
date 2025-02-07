@@ -34,8 +34,7 @@ DEBUG = True
 # Trailing Slashesh on urls
 APPEND_SLASH = False
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['.fly.dev']
 
 # Application definition
 
@@ -64,7 +63,11 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+    'https://madi-chatbot-ui.fly.dev/',
+]
 
 ROOT_URLCONF = 'madi_chatbot.urls'
 
@@ -92,21 +95,21 @@ WSGI_APPLICATION = 'madi_chatbot.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': env("DB_NAME"),   # Database Name
-        'USER': env("DB_USER"),       # Database User
-        'PASSWORD': env("DB_PASSWORD"), # Database Password
-        'HOST': env("DB_HOST"),    # Database Host
-        'PORT': env("DB_PORT"),         # MySQL Port (default: 3306)
-        'OPTIONS': {
-            'charset': 'utf8mb4',   # Supports emojis and special characters
-        },
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': env("DB_NAME"),   # Database Name
+    #     'USER': env("DB_USER"),       # Database User
+    #     'PASSWORD': env("DB_PASSWORD"), # Database Password
+    #     'HOST': env("DB_HOST"),    # Database Host
+    #     'PORT': env("DB_PORT"),         # MySQL Port (default: 3306)
+    #     'OPTIONS': {
+    #         'charset': 'utf8mb4',   # Supports emojis and special characters
+    #     },
+    # }
 }
 
 
