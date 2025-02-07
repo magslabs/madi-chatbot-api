@@ -26,7 +26,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-k-ib7s*jtsk1#omh40hpd3opabl82%bj9+r7s+-1ih)wejyt51'
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -40,7 +40,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -85,8 +84,8 @@ TEMPLATES = [
     },
 ]
 
-#WSGI_APPLICATION = 'madi_chatbot.wsgi.application'
-ASGI_APPLICATION = 'madi_chatbot.asgi.application'
+WSGI_APPLICATION = 'madi_chatbot.wsgi.application'
+# ASGI_APPLICATION = 'madi_chatbot.asgi.application'
 
 
 # Database
