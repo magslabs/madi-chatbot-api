@@ -1,5 +1,5 @@
 venv
 
-madi_chatbot_api/__pycache__/*
-madi_chatbot_api/chatbot/__pycache__/*
-madi_chatbot_api/api/__pycache__/*
+__pycache__/
+chatbot/__pycache__/
+api/__pycache__/
